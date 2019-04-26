@@ -1,17 +1,12 @@
-FROM node:latest
+FROM node:10.15.3-alpine AS builder
 
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+COPY . .
 
-# install and cache app dependencies
-COPY package.json /usr/src/app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@1.7.1
+RUN npm install && \
+    npm run build
 
-# add app
-COPY . /usr/src/app
+FROM nginx:alpine
 
-# start app
-CMD ng serve
+COPY --from=builder /app/dist/* /usr/share/nginx/html/
