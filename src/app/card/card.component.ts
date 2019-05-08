@@ -103,7 +103,7 @@ export class CardComponent implements OnInit {
   }
   playAudio() {
     let audio = new Audio();
-    audio.src = "../../assets/music.mp3";
+    audio.src = "./assets/music.mp3";
     audio.load();
     audio.play();
   }
